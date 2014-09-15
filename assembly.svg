@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="804.33594"
-   height="804.32977"
+   width="988.5849"
+   height="641.3349"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="grid.pdf">
+   sodipodi:docname="assembly.pdf">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.80936952"
-     inkscape:cx="402.16797"
-     inkscape:cy="402.16489"
+     inkscape:zoom="1.0150703"
+     inkscape:cx="494.29245"
+     inkscape:cy="320.66745"
      inkscape:document-units="px"
      inkscape:current-layer="g3782"
      showgrid="false"
@@ -58,7 +58,7 @@
      inkscape:label="Livello 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(127.47624,-375.51372)">
+     transform="translate(219.60124,-457.00862)">
     <g
        id="g3777"
        transform="translate(-6.6056699,11.91044)">
@@ -2572,33 +2572,26 @@
            y="491.66367" />
         <path
            style="fill:#000000;fill-opacity:0.32126698;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1"
-           d="m 598.4375,7.4375 0,9.75 -27.46875,0 0,549.96875 27.46875,0 0,9.75 32.65625,0 0,-9.75 27.46875,0 0,-549.96875 -27.46875,0 0,-9.75 -32.65625,0 z"
-           transform="translate(-11.030175,473.59885)"
+           d="m 587.40733,481.03732 0,9.75 -27.46875,0 0,549.96878 27.46875,0 0,9.75 32.65625,0 0,-9.75 27.46875,0 0,-549.96878 -27.46875,0 0,-9.75 -32.65625,0 z"
            id="rect3384-1"
            inkscape:connector-curvature="0" />
         <path
-           inkscape:connector-curvature="0"
-           style="fill:#000000;fill-opacity:0.32126698;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1"
-           d="m -57.470874,481.03728 0,9.75 -27.46875,0 0,549.96882 27.46875,0 0,9.75 32.65625,0 0,-9.75 27.4687501,0 0,-549.96882 -27.4687501,0 0,-9.75 -32.65625,0 z"
-           id="rect3384-1-9" />
-        <path
            style="fill:#000000;fill-opacity:0.41176471;stroke:#000000;stroke-width:0.99351019;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           d="m 7.59375,-74.0625 0,28.3125 9.65625,0 0,30.96875 -9.65625,0 0,28.3125 569.46875,0 0,-28.3125 -9.65625,0 0,-30.96875 9.65625,0 0,-28.3125 -569.46875,0 z"
-           transform="translate(-11.030175,473.59885)"
+           d="m 652.06713,1050.5061 28.3125,0 0,-9.6562 30.96875,0 0,9.6562 28.3125,0 0,-569.46878 -28.3125,0 0,9.65625 -30.96875,0 0,-9.65625 -28.3125,0 0,569.46878 z"
            id="rect4275"
            inkscape:connector-curvature="0" />
-        <path
-           inkscape:connector-curvature="0"
-           style="fill:#000000;fill-opacity:0.41176471;stroke:#000000;stroke-width:0.99350983;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           d="m -3.446806,1044.4117 0,28.3125 9.6562423,0 0,30.9687 -9.6562423,0 0,28.3125 569.468306,0 0,-28.3125 -9.65625,0 0,-30.9687 9.65625,0 0,-28.3125 -569.468306,0 z"
-           id="rect4275-8" />
         <rect
-           style="fill:none;stroke:#000000;stroke-width:0.99916857;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="fill:none;stroke:#000000;stroke-width:0.98910314;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
            id="rect4317"
-           width="803.33154"
-           height="803.33154"
-           x="-120.37098"
-           y="364.10193" />
+           width="987.59357"
+           height="640.34949"
+           x="-212.50101"
+           y="445.58905" />
+        <path
+           style="fill:#000000;fill-opacity:0.41176471;stroke:#000000;stroke-width:1.01243067;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="M 63.3125 35.9375 L 63.3125 45.59375 L 35.9375 45.59375 L 35.9375 605.40625 L 64.28125 605.40625 L 64.28125 595.78125 L 95.1875 595.78125 L 95.1875 605.40625 L 123.5 605.40625 L 123.5 45.59375 L 96.125 45.59375 L 96.125 35.9375 L 63.3125 35.9375 z "
+           transform="translate(-212.99557,445.09818)"
+           id="rect4324" />
       </g>
     </g>
   </g>
