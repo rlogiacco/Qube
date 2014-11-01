@@ -1,0 +1,45 @@
+#######################################
+# Syntax Coloring Map For Qube
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Qube	KEYWORD1
+Coord	KEYWORD1
+Elapsed	KEYWORD1
+Effect	KEYWORD1
+Rain	KEYWORD1
+Blink	KEYWORD1
+Windmill	KEYWORD1
+PlaneBoing	KEYWORD1
+RandomFill	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+fill	KEYWORD2
+plane	KEYWORD2
+shift	KEYWORD2
+voxel	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+X	LITERAL1
+Y	LITERAL1
+Z	LITERAL1
+ON	LITERAL1
+OFF	LITERAL1
+FLIP	LITERAL1
+EMPTY	LITERAL1
+FULL	LITERAL1
+HOLLOW	LITERAL1
+WIREFRAME	LITERAL1
