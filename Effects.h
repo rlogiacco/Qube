@@ -30,8 +30,9 @@ class Effect {
 		Elapsed elapsed;
 	public:
 		Effect(Qube& qube, uint16_t speed);
+		virtual void init() = 0;
 		virtual void update() = 0;
-		virtual ~Effect() { }
+		virtual ~Effect() { };
 
 		// Sets or clear all voxels in random order
 		void random_filler(Qube& qube, uint16_t speed, bool state);
@@ -53,16 +54,22 @@ class Effect {
 };
 
 class RandomFill : public Effect {
+	private:
+		bool state;
+		uint16_t counter;
 	public:
-		RandomFill(Qube& qube, uint16_t speed) : Effect(qube, speed) {}
+		RandomFill(Qube& qube, uint16_t speed, bool reverse = false);
+		void init();
 		void update();
 };
 
-class PlaneBoing : public Effect {
+class PlaneBounce : public Effect {
 	private:
 		Axis axis;
+		uint16_t counter;
 	public:
-		PlaneBoing(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) { this->axis = axis; }
+		PlaneBounce(Qube& qube, uint16_t speed, Axis axis);
+		void init();
 		void update();
 };
 
@@ -71,14 +78,17 @@ class Rain : public Effect {
 		uint16_t drops;
 	public:
 		Rain(Qube& qube, uint16_t speed, uint16_t drops) : Effect(qube, speed) { this->drops = drops; }
+		void init();
 		void update();
 };
 
 class Windmill : public Effect {
 	private:
 		Axis axis;
+		uint16_t counter;
 	public:
-		Windmill(Qube& qube, uint16_t speed, uint16_t drops, Axis axis) : Effect(qube, speed) { this->axis = axis; }
+		Windmill(Qube& qube, uint16_t speed, Axis axis);
+		void init();
 		void update();
 };
 

@@ -24,7 +24,9 @@
 Effect::Effect(Qube& qube, uint16_t speed) : qube(qube) {
 	this->speed = 1000 / speed;
 }
-
+void Rain::init() {
+	qube.fill(EMPTY);
+}
 void Rain::update() {
 	if (elapsed > speed) {
 		qube.shift(Z,1);
@@ -45,30 +47,86 @@ void Rain::update() {
 	}
 }
 
-void Effect::random_filler(Qube& qube, uint16_t speed, bool state) {
-	uint16_t count = qube.size * qube.size * qube.size;
+RandomFill::RandomFill(Qube& qube, uint16_t speed, bool reverse) : Effect(qube, speed) {
+	this->counter = qube.size * qube.size * qube.size;
+	this->state = !reverse;
+}
+void RandomFill::init() {
 	qube.fill(state ? EMPTY : FULL);
-	while (count > 0) {
-		Coord coord(rand() % qube.size, rand() % qube.size, rand() % qube.size);
-		if (qube.voxel(coord) != state) {
-			qube.voxel(coord, state);
-			count--;
-			delay(speed);
+}
+void RandomFill::update() {
+	if (elapsed > speed) {
+		if (counter > 0) {
+			Coord coord(rand() % qube.size, rand() % qube.size, rand() % qube.size);
+			if (qube.voxel(coord) != state) {
+				qube.voxel(coord, state);
+				counter--;
+				elapsed = 0;
+			}
+		} else {
+			counter = qube.size * qube.size * qube.size;
+			state = !state;
 		}
 	}
 }
 
-void Effect::plane_boing(Qube& qube, uint16_t speed, Axis axis) {
+
+PlaneBounce::PlaneBounce(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) {
+	this->axis = axis;
+	this->counter = 0;
+}
+void PlaneBounce::init() {
 	qube.fill(EMPTY);
 	qube.plane(axis, 0, FULL);
-	delay(speed);
-	for (uint8_t i = 1; i < qube.size; i++) {
-		qube.shift(axis, -1);
-		delay(speed);
+}
+void PlaneBounce::update() {
+	if (elapsed > speed) {
+		if (counter == 0) {
+			counter = (qube.size - 1) * 2;
+		}
+		qube.shift(axis, (counter >= qube.size) ? -1 : 1);
+		counter--;
+		elapsed = 0;
 	}
-	for (uint8_t i = 1; i < qube.size; i++) {
-		qube.shift(axis, 1);
-		delay(speed);
+}
+
+Windmill::Windmill(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) {
+	this->axis = axis;
+	this->counter = (qube.size) - 1 * 2;
+}
+void Windmill::init() {
+	qube.fill(EMPTY);
+}
+void Windmill::update() {
+	if (elapsed > speed) {
+		if (counter == 0) {
+			counter = (qube.size - 1) * 2;
+		}
+		qube.fill(EMPTY);
+		DEBUG("counter is %u", counter);
+		if (counter == 4) {
+			for (int i = 0; i < qube.size; i++) {
+				for (int j = 0; j < qube.size; j++)
+					qube.voxel(Coord(1, j, i), ON);
+			}
+		} else if (counter == 3) {
+			for (int i = 0; i < qube.size; i++) {
+				for (int j = 0; j < qube.size; j++)
+					qube.voxel(Coord(j, j, i), ON);
+			}
+		} else if (counter == 2) {
+			for (int i = 0; i < qube.size; i++) {
+				for (int j = 0; j < qube.size; j++)
+					qube.voxel(Coord(j, 1, i), ON);
+			}
+		} else if (counter == 1) {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < qube.size; j++)
+					qube.voxel(Coord(j, qube.size - j - 1, i), ON);
+			}
+		}
+		counter--;
+		elapsed = 0;
 	}
 }
 
@@ -101,37 +159,6 @@ void Effect::raindrop(Qube& qube, uint16_t speed, uint16_t drops) {
 	}
 }
 
-void Effect::windmill(Qube& qube, uint16_t speed, uint16_t rotations) {
-	qube.fill(EMPTY);
-	while (rotations > 0) {
-		for (int n = 0; n < 4; n++) {
-			if (n == 0) {
-				for (int i = 0; i < qube.size; i++) {
-					for (int j = 0; j < qube.size; j++)
-						qube.voxel(Coord(1, j, i), ON);
-				}
-			} else if (n == 1) {
-				for (int i = 0; i < qube.size; i++) {
-					for (int j = 0; j < qube.size; j++)
-						qube.voxel(Coord(j, j, i), ON);
-				}
-			} else if (n == 2) {
-				for (int i = 0; i < qube.size; i++) {
-					for (int j = 0; j < qube.size; j++)
-						qube.voxel(Coord(j, 1, i), ON);
-				}
-			} else if (n == 3) {
-				for (int i = 0; i < 3; i++) {
-					for (int j = 0; j < qube.size; j++)
-						qube.voxel(Coord(j, qube.size - j - 1, i), ON);
-				}
-			}
-			delay(speed);
-			qube.fill(EMPTY);
-		}
-		rotations--;
-	}
-}
 
 void Effect::stepway(Qube& qube, uint16_t speed, uint16_t iterations) {
 	qube.fill(EMPTY);
