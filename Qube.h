@@ -29,6 +29,8 @@
 enum Axis { X, Y, Z };
 enum Fill { EMPTY, FULL, WIREFRAME, HOLLOW};
 enum Bit { OFF, ON, FLIP };
+enum Overflow { WRAP, CLEAR };
+
 struct Coord {
 		uint8_t x;
 		uint8_t y;
@@ -57,7 +59,7 @@ class Qube {
 		void box(uint8_t x, uint8_t y, uint8_t z, uint8_t l, uint8_t h, uint8_t w, Fill fill);
 		void fill(uint8_t pattern);
 		void fill(Fill fill);
-		void shift(Axis axis, int8_t steps);
+		void shift(Axis axis, int8_t steps, Overflow overflow = WRAP);
 		void print();
 		volatile uint8_t* operator[] (uint8_t level) { return cube[level]; }
 		~Qube();

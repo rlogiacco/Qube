@@ -171,7 +171,7 @@ void Qube::plane(Axis axis, uint8_t index, uint8_t fill) {
 }
 
 
-void Qube::shift(Axis axis, int8_t steps) {
+void Qube::shift(Axis axis, int8_t steps, Overflow overflow) {
 	if (steps == 0)
 		return;
 
@@ -187,7 +187,11 @@ void Qube::shift(Axis axis, int8_t steps) {
 					for (uint8_t l = 0; l < size - 1; l++) {
 						cube[l] = cube[l + 1];
 					}
-					cube[size - 1] = tmp;
+					if (overflow == WRAP) {
+						cube[size - 1] = tmp;
+					} else {
+						plane(axis, size - 1, EMPTY);
+					}
 				}
 			} else {
 				for (uint8_t i = 0; i < -steps; i++) {
