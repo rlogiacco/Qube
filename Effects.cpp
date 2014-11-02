@@ -24,6 +24,7 @@
 Effect::Effect(Qube& qube, uint16_t speed) : qube(qube) {
 	this->speed = 1000 / speed;
 }
+
 void Rain::init() {
 	qube.fill(EMPTY);
 }
@@ -103,7 +104,6 @@ void Windmill::update() {
 			counter = (qube.size - 1) * 2;
 		}
 		qube.fill(EMPTY);
-		DEBUG("counter is %u", counter);
 		if (counter == 4) {
 			for (int i = 0; i < qube.size; i++) {
 				for (int j = 0; j < qube.size; j++)
@@ -130,35 +130,17 @@ void Windmill::update() {
 	}
 }
 
-
-void Effect::raindrop(Qube& qube, uint16_t speed, uint16_t drops) {
-	while(drops > 0) {
-		bool add = true;
-		// add a drop on the top level
-		Coord coord(rand() % qube.size, rand() % qube.size, qube.size - 1);
-		for (uint8_t i = qube.size - 1; i > 0; i--) {
-			DEBUG("checking level %u", i - 1);
-			if (qube.voxel(Coord(coord.x, coord.y, i - 1))) {
-				DEBUG("DO NOT ADD: found drop on level %u", i);
-				add = false;
-				break;
-			}
-		}
-		if (add) {
-			qube.voxel(coord, ON);
-			drops--;
-		}
-		delay(speed);
-		qube.shift(Z,1);
-		qube.plane(Z, qube.size - 1, 0x00);
-	}
-	for (uint8_t i = qube.size -1; i > 0; i--) {
-		delay(speed);
-		qube.shift(Z,1);
-		qube.plane(Z, qube.size - 1, 0x00);
+Blink::Blink(Qube& qube, uint16_t speed) : Effect(qube, speed) {
+	this->state = false;
+}
+void Blink::init() { }
+void Blink::update() {
+	if (elapsed > speed) {
+		qube.fill(state ? FULL : EMPTY);
+		state = !state;
+		elapsed = 0;
 	}
 }
-
 
 void Effect::stepway(Qube& qube, uint16_t speed, uint16_t iterations) {
 	qube.fill(EMPTY);
@@ -177,14 +159,7 @@ void Effect::stepway(Qube& qube, uint16_t speed, uint16_t iterations) {
 	}
 }
 
-void Effect::blink(Qube& qube, uint16_t speed, uint16_t iterations) {
-	while(iterations > 0) {
-		qube.fill(iterations % 2 ? FULL : EMPTY);
-		delay(speed);
-	}
-}
-
-void Effect::test(Qube& qube, uint16_t speed) {
+void test(Qube& qube, uint16_t speed) {
 	for (uint8_t i = 0; i < 3; i++) {
 		qube.voxel(Coord(0, 0, 0), ON);
 		delay(speed);

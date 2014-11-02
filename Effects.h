@@ -23,6 +23,8 @@
 #include "Qube.h"
 #include "Elapsed.h"
 
+void test(Qube& qube, uint16_t wait = 500);
+
 class Effect {
 	protected:
 		Qube& qube;
@@ -88,6 +90,15 @@ class Windmill : public Effect {
 		uint16_t counter;
 	public:
 		Windmill(Qube& qube, uint16_t speed, Axis axis);
+		void init();
+		void update();
+};
+
+class Blink : public Effect {
+	private:
+		bool state;
+	public:
+		Blink(Qube& qube, uint16_t speed);
 		void init();
 		void update();
 };
