@@ -49,10 +49,10 @@ void Rain::update() {
 }
 
 RandomFill::RandomFill(Qube& qube, uint16_t speed, bool reverse) : Effect(qube, speed) {
-	this->counter = qube.size * qube.size * qube.size;
 	this->state = !reverse;
 }
 void RandomFill::init() {
+	this->counter = qube.size * qube.size * qube.size;
 	qube.fill(state ? EMPTY : FULL);
 }
 void RandomFill::update() {
@@ -74,10 +74,10 @@ void RandomFill::update() {
 
 PlaneBounce::PlaneBounce(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) {
 	this->axis = axis;
-	this->counter = 0;
 }
 void PlaneBounce::init() {
 	qube.fill(EMPTY);
+	this->counter = 0;
 	qube.plane(axis, 0, FULL);
 }
 void PlaneBounce::update() {
@@ -93,10 +93,10 @@ void PlaneBounce::update() {
 
 Windmill::Windmill(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) {
 	this->axis = axis;
-	this->counter = (qube.size) - 1 * 2;
 }
 void Windmill::init() {
 	qube.fill(EMPTY);
+	this->counter = (qube.size) - 1 * 2;
 }
 void Windmill::update() {
 	if (elapsed > speed) {
