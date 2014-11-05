@@ -49,8 +49,6 @@ class Effect {
 
 		void blink(Qube& qube, uint16_t speed, uint16_t iterations);
 
-		void test(Qube& qube, uint16_t speed = 500);
-
 		void stepway(Qube& qube, uint16_t speed, uint16_t iterations);
 
 };
@@ -99,6 +97,15 @@ class Blink : public Effect {
 		bool state;
 	public:
 		Blink(Qube& qube, uint16_t speed);
+		void init();
+		void update();
+};
+
+class RandomBlinker : public Effect {
+	private:
+		uint8_t frequency;
+	public:
+		RandomBlinker(Qube& qube, uint16_t speed, uint8_t frequency) : Effect(qube, speed) { this->frequency = 1000 / frequency; }
 		void init();
 		void update();
 };

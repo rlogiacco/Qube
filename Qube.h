@@ -26,16 +26,26 @@
 #include <WProgram.h>
 #endif
 
-enum Axis { X, Y, Z };
-enum Fill { EMPTY, FULL, WIREFRAME, HOLLOW};
-enum Bit { OFF, ON, FLIP };
-enum Overflow { WRAP, CLEAR };
+enum Axis {
+	X, Y, Z
+};
+enum Fill {
+	EMPTY, FULL, WIREFRAME, HOLLOW
+};
+enum Bit {
+	OFF, ON, FLIP
+};
+enum Overflow {
+	WRAP, CLEAR
+};
 
 struct Coord {
 		uint8_t x;
 		uint8_t y;
 		uint8_t z;
-		Coord(uint8_t x, uint8_t y, uint8_t z) : x(x), y(y), z(z) { }
+		Coord(uint8_t x, uint8_t y, uint8_t z) :
+				x(x), y(y), z(z) {
+		}
 };
 
 // divide and round up
@@ -44,27 +54,84 @@ struct Coord {
 class Qube {
 	private:
 		volatile uint8_t** cube;
-		volatile uint8_t current_layer;
+		volatile bool enabled;
 
 		template<typename T, size_t n> char (& _size(const T (&)[n]) )[n];
+
 	public:
-		Qube(uint8_t size);
+
+		/**
+		 * Constructor accepts size and an optional status, defaulting to enabled
+		 */
+		Qube(uint8_t size, bool enabled = true);
+
 		volatile uint8_t size;
+
+		/**
+		 * Returns the status of a specific voxel
+		 */
 		bool voxel(Coord coord);
+
+		/**
+		 * Sets the status of a specific voxel
+		 */
 		void voxel(Coord coord, Bit bit);
 		void voxel(Coord coord, bool on);
+
+		/**
+		 * Sets the fill pattern for an entire plane/layer
+		 */
 		void plane(Axis axis, uint8_t index, Fill fill);
 		void plane(Axis axis, uint8_t index, uint8_t fill);
+
+		/**
+		 * Draws a line from start coordinates to end
+		 */
 		void line(Coord start, Coord end);
-		void box(uint8_t x, uint8_t y, uint8_t z, uint8_t l, uint8_t h, uint8_t w, Fill fill);
+
+		/**
+		 * Draws a box from start coordinates with specified lenght, width and height
+		 */
+		void box(Coord start, uint8_t l, uint8_t w, uint8_t h, Fill fill);
+
+		/**
+		 * Fills the entire cube with the supplied pattern
+		 */
 		void fill(uint8_t pattern);
 		void fill(Fill fill);
+
+		/**
+		 * Shifts all contents by one or more steps along an axis.
+		 * Negative steps value invert shifting direction and an optional overflow method can be specified
+		 */
 		void shift(Axis axis, int8_t steps, Overflow overflow = WRAP);
+
+		/**
+		 * Prints on serial a string representation of the contents
+		 */
 		void print();
-		volatile uint8_t* operator[] (uint8_t level) { return cube[level]; }
+
+		/**
+		 * Runs a test procedure: blink three times voxel at (0,0,0), then turn on each voxel
+		 * by columns, rows and layers and then turns them all off in reverse order.
+		 */
+		void test(uint16_t speed = 250);
+
+		/**
+		 * Use array notation for direct layer access
+		 */
+		volatile uint8_t* operator[] (uint8_t layer) { return cube[layer]; }
+
+		/**
+		 * Cast to bool returns the status: true for enabled, false for disabled
+		 */
+		operator volatile bool() { return enabled; }
+
+		/**
+		 * Assign a bool to set the status: true for enabled, false for disabled
+		 */
+		void operator= (bool enable) { enabled = enable; }
 		~Qube();
-};
-
-
+	};
 
 #endif /* QUBE_H_ */

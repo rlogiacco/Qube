@@ -19,9 +19,11 @@
 
 
 #include "Qube.h"
+#include <FormattingSerialDebug.h>
 
-Qube::Qube(uint8_t size) {
+Qube::Qube(uint8_t size, bool enabled) {
 	this->size = size;
+	this->enabled = enabled;
 	this->cube = (volatile uint8_t**)malloc(size * sizeof(uint8_t*));
 	for (int i = 0; i < size; i++) {
 		this->cube[i] = (uint8_t*)malloc(_divrup((size * size), 8));
@@ -203,5 +205,31 @@ void Qube::shift(Axis axis, int8_t steps, Overflow overflow) {
 				}
 			}
 			break;
+	}
+}
+
+
+void Qube::test(uint16_t speed) {
+	for (uint8_t i = 0; i < 3; i++) {
+		voxel(Coord(0, 0, 0), ON);
+		delay(speed);
+		voxel(Coord(0, 0, 0), OFF);
+		delay(speed);
+	}
+	for (uint8_t z = 0; z < size; z++) {
+		for (uint8_t y = 0; y < size; y++) {
+			for (uint8_t x = 0; x < size; x++) {
+				voxel(Coord(x, y, z), ON);
+				delay(speed);
+			}
+		}
+	}
+	for (uint8_t z = size; z > 0; z--) {
+		for (uint8_t y = size; y > 0; y--) {
+			for (uint8_t x = size; x > 0; x--) {
+				voxel(Coord(x - 1, y - 1, z - 1), OFF);
+				delay(speed);
+			}
+		}
 	}
 }

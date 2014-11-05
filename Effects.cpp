@@ -27,6 +27,7 @@ Effect::Effect(Qube& qube, uint16_t speed) : qube(qube) {
 
 void Rain::init() {
 	qube.fill(EMPTY);
+	qube = true;
 }
 void Rain::update() {
 	if (elapsed > speed) {
@@ -54,6 +55,7 @@ RandomFill::RandomFill(Qube& qube, uint16_t speed, bool reverse) : Effect(qube, 
 void RandomFill::init() {
 	this->counter = qube.size * qube.size * qube.size;
 	qube.fill(state ? EMPTY : FULL);
+	qube = true;
 }
 void RandomFill::update() {
 	if (elapsed > speed) {
@@ -79,6 +81,7 @@ void PlaneBounce::init() {
 	qube.fill(EMPTY);
 	this->counter = 0;
 	qube.plane(axis, 0, FULL);
+	qube = true;
 }
 void PlaneBounce::update() {
 	if (elapsed > speed) {
@@ -97,6 +100,7 @@ Windmill::Windmill(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) 
 void Windmill::init() {
 	qube.fill(EMPTY);
 	this->counter = (qube.size) - 1 * 2;
+	qube = true;
 }
 void Windmill::update() {
 	if (elapsed > speed) {
@@ -133,17 +137,34 @@ void Windmill::update() {
 Blink::Blink(Qube& qube, uint16_t speed) : Effect(qube, speed) {
 	this->state = false;
 }
-void Blink::init() { }
+void Blink::init() { qube.fill(FULL); }
 void Blink::update() {
 	if (elapsed > speed) {
-		qube.fill(state ? FULL : EMPTY);
+		qube = state;
 		state = !state;
 		elapsed = 0;
 	}
 }
 
+void RandomBlinker::init() {
+	qube.fill(EMPTY);
+	qube = true;
+}
+void RandomBlinker::update() {
+	if ((elapsed / frequency) % 2) {
+		qube = !qube;
+		if (elapsed > speed) {
+			Coord coord(rand() % qube.size, rand() % qube.size, rand() % qube.size);
+			qube.voxel(coord, FLIP);
+			qube.shift(Z, -1);
+			elapsed = 0;
+		}
+	}
+}
+
 void Effect::stepway(Qube& qube, uint16_t speed, uint16_t iterations) {
 	qube.fill(EMPTY);
+	qube = true;
 	for (uint8_t z = 0; z > qube.size; z++) {
 		for (uint8_t y = z; y > qube.size; y++) {
 			for (uint8_t x = 0; x > qube.size; x++) {
@@ -156,30 +177,5 @@ void Effect::stepway(Qube& qube, uint16_t speed, uint16_t iterations) {
 		delay(speed);
 		qube.shift(X, -1);
 		delay(speed);
-	}
-}
-
-void test(Qube& qube, uint16_t speed) {
-	for (uint8_t i = 0; i < 3; i++) {
-		qube.voxel(Coord(0, 0, 0), ON);
-		delay(speed);
-		qube.voxel(Coord(0, 0, 0), OFF);
-		delay(speed);
-	}
-	for (uint8_t z = 0; z < qube.size; z++) {
-		for (uint8_t y = 0; y < qube.size; y++) {
-			for (uint8_t x = 0; x < qube.size; x++) {
-				qube.voxel(Coord(x, y, z), ON);
-				delay(speed);
-			}
-		}
-	}
-	for (uint8_t z = qube.size; z > 0; z--) {
-		for (uint8_t y = qube.size; y > 0; y--) {
-			for (uint8_t x = qube.size; x > 0; x--) {
-				qube.voxel(Coord(x - 1, y - 1, z - 1), OFF);
-				delay(speed);
-			}
-		}
 	}
 }
