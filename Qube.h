@@ -40,11 +40,30 @@ enum Overflow {
 };
 
 struct Coord {
-		uint8_t x;
-		uint8_t y;
-		uint8_t z;
+		uint8_t x, y, z;
 		Coord(uint8_t x, uint8_t y, uint8_t z) :
 				x(x), y(y), z(z) {
+		}
+};
+
+struct Box {
+		uint8_t x1, y1, z1;
+		uint8_t x2, y2, z2;
+		Box(uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2, uint8_t z2) :
+				x1(x1), y1(y1), z1(z1), x2(x2), y2(y2), z2(z2) {
+		}
+		Box(Coord min, Coord max) :
+				x1(min.x), y1(min.y), z1(min.z), x2(max.x), y2(max.y), z2(max.z) {
+		}
+};
+
+struct Vect {
+		uint8_t x; float dx;
+		uint8_t y; float dy;
+		uint8_t z; float dz;
+		Vect();
+		Vect(uint8_t x, uint8_t y, uint8_t z, float dx, float dy, float dz) :
+				x(x), dx(dx), y(y), dy(dy), z(z), dz(dz) {
 		}
 };
 
