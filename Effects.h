@@ -34,26 +34,15 @@ class Effect {
 		Effect(Qube& qube, uint16_t speed);
 		virtual void init() = 0;
 		virtual void update() = 0;
-		virtual ~Effect() { };
-
-		// Sets or clear all voxels in random order
-		void random_filler(Qube& qube, uint16_t speed, bool state);
-
-		// Sets a plane and sends it back and forth once
-		void plane_boing(Qube& qube, uint16_t speed, Axis axis);
-
-		// Have a maximum amount of drops flowing from top toward the bottom
-		void raindrop(Qube& qube, uint16_t speed, uint16_t drops = 1);
-
-		void windmill(Qube& qube, uint16_t speed, uint16_t rotations = 1);
-
-		void blink(Qube& qube, uint16_t speed, uint16_t iterations);
+		virtual bool completed() { return false; }
+		virtual ~Effect() {
+		}
 
 		void stepway(Qube& qube, uint16_t speed, uint16_t iterations);
 
 };
 
-class RandomFill : public Effect {
+class RandomFill: public Effect {
 	private:
 		bool state;
 		uint16_t counter;
@@ -63,7 +52,7 @@ class RandomFill : public Effect {
 		void update();
 };
 
-class PlaneBounce : public Effect {
+class PlaneBounce: public Effect {
 	private:
 		Axis axis;
 		uint16_t counter;
@@ -73,16 +62,19 @@ class PlaneBounce : public Effect {
 		void update();
 };
 
-class Rain : public Effect {
+class Rain: public Effect {
 	private:
 		uint16_t drops;
 	public:
-		Rain(Qube& qube, uint16_t speed, uint16_t drops) : Effect(qube, speed) { this->drops = drops; }
+		Rain(Qube& qube, uint16_t speed, uint16_t drops) :
+				Effect(qube, speed) {
+			this->drops = drops;
+		}
 		void init();
 		void update();
 };
 
-class Windmill : public Effect {
+class Windmill: public Effect {
 	private:
 		Axis axis;
 		uint16_t counter;
@@ -92,7 +84,7 @@ class Windmill : public Effect {
 		void update();
 };
 
-class Blink : public Effect {
+class Blink: public Effect {
 	private:
 		bool state;
 	public:
@@ -101,11 +93,30 @@ class Blink : public Effect {
 		void update();
 };
 
-class RandomBlinker : public Effect {
+class RandomBlinker: public Effect {
 	private:
 		uint8_t frequency;
 	public:
-		RandomBlinker(Qube& qube, uint16_t speed, uint8_t frequency) : Effect(qube, speed) { this->frequency = 1000 / frequency; }
+		RandomBlinker(Qube& qube, uint16_t speed, uint8_t frequency);
+		void init();
+		void update();
+};
+
+class Carousel: public Effect {
+	protected:
+		Effect** effects;
+		uint8_t size;
+		uint8_t current;
+	public:
+		Carousel(Qube& qube, uint16_t speed, Effect** effects, uint8_t size);
+		void init();
+		void update();
+};
+
+class RandomCarousel: public Carousel {
+	private:
+	public:
+		RandomCarousel(Qube& qube, uint16_t speed, Effect& effects, uint8_t size);
 		void init();
 		void update();
 };

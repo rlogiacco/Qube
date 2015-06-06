@@ -17,11 +17,11 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
 #include "Effects.h"
 #include <FormattingSerialDebug.h>
 
-Effect::Effect(Qube& qube, uint16_t speed) : qube(qube) {
+Effect::Effect(Qube& qube, uint16_t speed) :
+		qube(qube) {
 	this->speed = 1000 / speed;
 }
 
@@ -31,7 +31,7 @@ void Rain::init() {
 }
 void Rain::update() {
 	if (elapsed > speed) {
-		qube.shift(Z,1);
+		qube.shift(Z, 1);
 		qube.plane(Z, qube.size - 1, 0x00);
 		bool add = true;
 		// add a drop on the top level
@@ -49,7 +49,8 @@ void Rain::update() {
 	}
 }
 
-RandomFill::RandomFill(Qube& qube, uint16_t speed, bool reverse) : Effect(qube, speed) {
+RandomFill::RandomFill(Qube& qube, uint16_t speed, bool reverse) :
+		Effect(qube, speed) {
 	this->state = !reverse;
 }
 void RandomFill::init() {
@@ -73,8 +74,8 @@ void RandomFill::update() {
 	}
 }
 
-
-PlaneBounce::PlaneBounce(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) {
+PlaneBounce::PlaneBounce(Qube& qube, uint16_t speed, Axis axis) :
+		Effect(qube, speed) {
 	this->axis = axis;
 }
 void PlaneBounce::init() {
@@ -94,7 +95,8 @@ void PlaneBounce::update() {
 	}
 }
 
-Windmill::Windmill(Qube& qube, uint16_t speed, Axis axis) : Effect(qube, speed) {
+Windmill::Windmill(Qube& qube, uint16_t speed, Axis axis) :
+		Effect(qube, speed) {
 	this->axis = axis;
 }
 void Windmill::init() {
@@ -134,10 +136,13 @@ void Windmill::update() {
 	}
 }
 
-Blink::Blink(Qube& qube, uint16_t speed) : Effect(qube, speed) {
+Blink::Blink(Qube& qube, uint16_t speed) :
+		Effect(qube, speed) {
 	this->state = false;
 }
-void Blink::init() { qube.fill(FULL); }
+void Blink::init() {
+	qube.fill(FULL);
+}
 void Blink::update() {
 	if (elapsed > speed) {
 		qube = state;
@@ -146,6 +151,10 @@ void Blink::update() {
 	}
 }
 
+RandomBlinker::RandomBlinker(Qube& qube, uint16_t speed, uint8_t frequency) :
+		Effect(qube, speed) {
+	this->frequency = 1000 / frequency;
+}
 void RandomBlinker::init() {
 	qube.fill(EMPTY);
 	qube = true;
@@ -160,6 +169,37 @@ void RandomBlinker::update() {
 			elapsed = 0;
 		}
 	}
+}
+
+Carousel::Carousel(Qube& qube, uint16_t speed, Effect** effects, uint8_t size) :
+		Effect(qube, speed) {
+	this->effects = effects;
+	this->size = size;
+}
+void Carousel::init() {
+	current = 0;
+	effects[0]->init();
+}
+void Carousel::update() {
+	if (elapsed) {
+		if (++current == size) {
+			current = 0;
+		}
+		effects[current]->init();
+	}
+	effects[current]->update();
+}
+
+void RandomCarousel::init() {
+	current = rand() % size;
+	effects[current]->init();
+}
+void RandomCarousel::update() {
+	if (elapsed) {
+		current = rand() % size;
+		effects[current]->init();
+	}
+	effects[current]->update();
 }
 
 void Effect::stepway(Qube& qube, uint16_t speed, uint16_t iterations) {
