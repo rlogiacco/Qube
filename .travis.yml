@@ -9,9 +9,12 @@ before_install:
   - sudo mv arduino-1.6.5 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
   
+  - sudo git clone --branch=master git://github.com/rlogiacco/MicroDebug.git /usr/local/share/arduino/libraries/MicroDebug
+  
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/MicroDebug
   - arduino --verbose --install-library "MicroDebug"
+  
 script:
   - arduino --verbose --verify --board ${BOARD} $PWD/examples/Cube3/Cube3.ino
   
