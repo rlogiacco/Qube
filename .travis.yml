@@ -11,7 +11,7 @@ before_install:
   
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/MicroDebug
-  
+  - arduino --install-library "MicroDebug"
 script:
   - arduino --verify --board ${BOARD} $PWD/examples/Cube3/Cube3.ino
   
