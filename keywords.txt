@@ -9,20 +9,20 @@
 Qube	KEYWORD1
 Coord	KEYWORD1
 Elapsed	KEYWORD1
-Effect	KEYWORD1
-Rain	KEYWORD1
-Blink	KEYWORD1
-Windmill	KEYWORD1
-PlaneBoing	KEYWORD1
-RandomFill	KEYWORD1
+Effects	KEYWORD1
+
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-fill	KEYWORD2
-plane	KEYWORD2
-shift	KEYWORD2
 voxel	KEYWORD2
+plane	KEYWORD2
+line	KEYWORD2
+box	KEYWORD2
+fill	KEYWORD2
+shift	KEYWORD2
+print	KEYWORD2
+test	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
