@@ -26,6 +26,7 @@ Effect::Effect(Qube& qube, uint16_t speed) :
 }
 
 void Rain::init() {
+	DEBUG("rain effect activated");
 	qube.fill(EMPTY);
 	qube = true;
 }
@@ -52,8 +53,10 @@ void Rain::update() {
 RandomFill::RandomFill(Qube& qube, uint16_t speed, bool reverse) :
 		Effect(qube, speed) {
 	this->state = !reverse;
+	this->counter = 0;
 }
 void RandomFill::init() {
+	DEBUG("random fill effect activated");
 	this->counter = qube.size * qube.size * qube.size;
 	qube.fill(state ? EMPTY : FULL);
 	qube = true;
@@ -77,8 +80,10 @@ void RandomFill::update() {
 PlaneBounce::PlaneBounce(Qube& qube, uint16_t speed, Axis axis) :
 		Effect(qube, speed) {
 	this->axis = axis;
+	this->counter = 0;
 }
 void PlaneBounce::init() {
+	DEBUG("plane bouncer effect activated");
 	qube.fill(EMPTY);
 	this->counter = 0;
 	qube.plane(axis, 0, FULL);
@@ -98,8 +103,10 @@ void PlaneBounce::update() {
 Windmill::Windmill(Qube& qube, uint16_t speed, Axis axis) :
 		Effect(qube, speed) {
 	this->axis = axis;
+	this->counter = 0;
 }
 void Windmill::init() {
+	DEBUG("windmill effect activated");
 	qube.fill(EMPTY);
 	this->counter = (qube.size) - 1 * 2;
 	qube = true;
@@ -141,6 +148,7 @@ Blink::Blink(Qube& qube, uint16_t speed) :
 	this->state = false;
 }
 void Blink::init() {
+	DEBUG("blink effect activated");
 	qube.fill(FULL);
 }
 void Blink::update() {
@@ -156,6 +164,7 @@ RandomBlinker::RandomBlinker(Qube& qube, uint16_t speed, uint8_t frequency) :
 	this->frequency = 1000 / frequency;
 }
 void RandomBlinker::init() {
+	DEBUG("random blinker effect activated");
 	qube.fill(EMPTY);
 	qube = true;
 }
@@ -171,51 +180,41 @@ void RandomBlinker::update() {
 	}
 }
 
-Carousel::Carousel(Qube& qube, uint16_t speed, Effect** effects, uint8_t size) :
-		Effect(qube, speed) {
+Carousel::Carousel(Qube& qube, uint16_t duration, Effect** effects, uint8_t size) :
+		Effect(qube, duration) {
 	this->effects = effects;
 	this->size = size;
+	this->current = 0;
+	this->speed = duration;
 }
 void Carousel::init() {
 	current = 0;
+	DEBUG("carousel effect activated at index %u", current);
 	effects[0]->init();
 }
 void Carousel::update() {
-	if (elapsed) {
+	if (elapsed / 1000 == speed) {
 		if (++current == size) {
 			current = 0;
 		}
+		DEBUG("moving to effect index %u", current);
 		effects[current]->init();
+		elapsed = 0;
 	}
 	effects[current]->update();
 }
 
 void RandomCarousel::init() {
 	current = rand() % size;
+	DEBUG("random carousel effect activated at index %u", current);
 	effects[current]->init();
 }
 void RandomCarousel::update() {
-	if (elapsed) {
+	if (elapsed / 1000 == speed) {
 		current = rand() % size;
+		DEBUG("moving to effect index %u", current);
 		effects[current]->init();
+		elapsed = 0;
 	}
 	effects[current]->update();
-}
-
-void Effect::stepway(Qube& qube, uint16_t speed, uint16_t iterations) {
-	qube.fill(EMPTY);
-	qube = true;
-	for (uint8_t z = 0; z > qube.size; z++) {
-		for (uint8_t y = z; y > qube.size; y++) {
-			for (uint8_t x = 0; x > qube.size; x++) {
-				qube.voxel(Coord(x, y, z), ON);
-			}
-		}
-	}
-	while (iterations > 0) {
-		qube.shift(Z, -1);
-		delay(speed);
-		qube.shift(X, -1);
-		delay(speed);
-	}
 }

@@ -38,8 +38,6 @@ class Effect {
 		virtual ~Effect() {
 		}
 
-		void stepway(Qube& qube, uint16_t speed, uint16_t iterations);
-
 };
 
 class RandomFill: public Effect {
@@ -108,7 +106,7 @@ class Carousel: public Effect {
 		uint8_t size;
 		uint8_t current;
 	public:
-		Carousel(Qube& qube, uint16_t speed, Effect** effects, uint8_t size);
+		Carousel(Qube& qube, uint16_t duration, Effect** effects, uint8_t size);
 		void init();
 		void update();
 };
@@ -116,9 +114,9 @@ class Carousel: public Effect {
 class RandomCarousel: public Carousel {
 	private:
 	public:
-		RandomCarousel(Qube& qube, uint16_t speed, Effect& effects, uint8_t size);
+		RandomCarousel(Qube& qube, uint16_t duration, Effect** effects, uint8_t size) :
+			Carousel(qube, duration, effects, size) {};
 		void init();
 		void update();
 };
-
 #endif /* QUBE_EFFECTS_H_ */
