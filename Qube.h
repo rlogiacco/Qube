@@ -58,33 +58,33 @@ struct Box {
 };
 
 struct Vect {
-		uint8_t x; float dx;
-		uint8_t y; float dy;
-		uint8_t z; float dz;
+		uint8_t x, y, z;
+		float dx, dy, dz;
 		Vect();
 		Vect(uint8_t x, uint8_t y, uint8_t z, float dx, float dy, float dz) :
-				x(x), dx(dx), y(y), dy(dy), z(z), dz(dz) {
+				x(x), y(y), z(z), dx(dx), dy(dy), dz(dz) {
+		}
+		Vect(Coord orig, float dx, float dy, float dz) :
+				x(orig.x), y(orig.y), z(orig.z), dx(dx), dy(dy), dz(dz) {
 		}
 };
-
-// divide and round up
-#define _divrup(x,y) (x / y + (((x < 0) ^ (y > 0)) && (x % y)))
 
 class Qube {
 	private:
 		volatile uint8_t** cube;
 		volatile bool enabled;
+		uint8_t __size;
 
 		template<typename T, size_t n> char (& _size(const T (&)[n]) )[n];
 
 	public:
+		const uint8_t& size;
 
 		/**
 		 * Constructor accepts size and an optional status, defaulting to enabled
 		 */
 		Qube(uint8_t size, bool enabled = true);
-
-		volatile uint8_t size;
+		~Qube();
 
 		/**
 		 * Returns the status of a specific voxel
@@ -109,7 +109,7 @@ class Qube {
 		void line(Coord start, Coord end);
 
 		/**
-		 * Draws a box from start coordinates with specified lenght, width and height
+		 * Draws a box from start coordinates with specified length, width and height
 		 */
 		void box(Coord start, uint8_t l, uint8_t w, uint8_t h, Fill fill);
 
@@ -139,18 +139,16 @@ class Qube {
 		/**
 		 * Use array notation for direct layer access
 		 */
-		volatile uint8_t* operator[] (uint8_t layer) { return cube[layer]; }
+		volatile uint8_t* operator[] (uint8_t layer) {return cube[layer];}
 
 		/**
 		 * Cast to bool returns the status: true for enabled, false for disabled
 		 */
-		operator volatile bool() { return enabled; }
+		operator volatile bool() {return enabled;}
 
 		/**
 		 * Assign a bool to set the status: true for enabled, false for disabled
 		 */
-		void operator= (bool enable) { enabled = enable; }
-		~Qube();
-	};
-
+		void operator= (bool enable) {enabled = enable;}
+};
 #endif /* QUBE_H_ */

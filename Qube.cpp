@@ -21,8 +21,12 @@
 #include "Qube.h"
 #include <FormattingSerialDebug.h>
 
-Qube::Qube(uint8_t size, bool enabled) {
-	this->size = size;
+
+// divide and round up
+#define _divrup(x,y) (x / y + (((x < 0) ^ (y > 0)) && (x % y)))
+
+Qube::Qube(uint8_t size, bool enabled): size(__size) {
+	this->__size = size;
 	this->enabled = enabled;
 	this->cube = (volatile uint8_t**)malloc(size * sizeof(uint8_t*));
 	for (int i = 0; i < size; i++) {
@@ -71,6 +75,12 @@ void Qube::fill(Fill fill) {
 		case EMPTY:
 			this->fill(0x00);
 			break;
+		case WIREFRAME:
+			//FIXME
+			break;
+		case HOLLOW:
+			//FIXME
+			break;
 	}
 }
 
@@ -109,6 +119,7 @@ void Qube::plane(Axis axis, uint8_t index, Fill fill) {
 	uint8_t bits = size * size;
 	switch (axis) {
 		case X:
+			//FIXME
 			switch (fill) {
 				case FULL:
 					break;
@@ -120,6 +131,7 @@ void Qube::plane(Axis axis, uint8_t index, Fill fill) {
 			}
 			break;
 		case Y:
+			//FIXME
 			switch (fill) {
 				case FULL:
 					break;
@@ -161,8 +173,10 @@ void Qube::plane(Axis axis, uint8_t index, uint8_t fill) {
 	uint8_t bits = size * size;
 	switch(axis) {
 		case X:
+			//FIXME
 			break;
 		case Y:
+			//FIXME
 			break;
 		case Z:
 			for (uint8_t i = 0; i <= bits / 8; i++) {
@@ -179,8 +193,10 @@ void Qube::shift(Axis axis, int8_t steps, Overflow overflow) {
 
 	switch (axis) {
 		case X:
+			//FIXME
 			break;
 		case Y:
+			//FIXME
 			break;
 		case Z:
 			if (steps > 0) {
