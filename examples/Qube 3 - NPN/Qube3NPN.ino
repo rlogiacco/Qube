@@ -3,7 +3,6 @@
 #include <Qube.h>
 #include <FormattingSerialDebug.h>
 
-#define COMMON_CATHODE true
 #define BUTTON_PIN 2
 #define SIZE 3
 const int pins[SIZE][SIZE] = { //
@@ -65,7 +64,7 @@ void setup() {
 volatile uint8_t layer = 0;
 
 ISR(TIMER1_COMPA_vect) {
-	digitalWrite(layers[layer++], COMMON_CATHODE ? LOW : HIGH);
+	digitalWrite(layers[layer++], LOW);
 	if (layer == qube.size)
 		layer = 0;
 	if (qube) {
@@ -76,10 +75,10 @@ ISR(TIMER1_COMPA_vect) {
 				uint8_t shift = 7 - position % 8;
 				uint8_t bit = ((byte >> shift) & 0x1);
 				position++;
-				digitalWrite(pins[y][x], COMMON_CATHODE ? bit : ~bit);
+				digitalWrite(pins[y][x], bit);
 			}
 		}
-		digitalWrite(layers[layer], COMMON_CATHODE ? HIGH : LOW);
+		digitalWrite(layers[layer], HIGH);
 	}
 }
 
