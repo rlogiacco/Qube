@@ -7,7 +7,6 @@
 #######################################
 
 Qube	KEYWORD1
-Coord	KEYWORD1
 Elapsed	KEYWORD1
 Effects	KEYWORD1
 
@@ -28,6 +27,8 @@ test	KEYWORD2
 # Instances (KEYWORD2)
 #######################################
 
+Coord	KEYWORD2
+Vect	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
@@ -43,3 +44,5 @@ EMPTY	LITERAL1
 FULL	LITERAL1
 HOLLOW	LITERAL1
 WIREFRAME	LITERAL1
+WRAP	LITERAL1
+CLEAR	LITERAL1
