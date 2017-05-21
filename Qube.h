@@ -139,16 +139,16 @@ class Qube {
 		/**
 		 * Use array notation for direct layer access
 		 */
-		volatile uint8_t* operator[] (uint8_t layer) {return cube[layer];}
+		inline volatile uint8_t* operator[] (uint8_t layer) const __attribute__((always_inline)) {return cube[layer];}
 
 		/**
 		 * Cast to bool returns the status: true for enabled, false for disabled
 		 */
-		operator volatile bool() {return enabled;}
+		inline operator volatile bool() const __attribute__((always_inline)) {return enabled;}
 
 		/**
 		 * Assign a bool to set the status: true for enabled, false for disabled
 		 */
-		void operator= (bool enable) {enabled = enable;}
+		inline void operator= (bool enable) __attribute__((always_inline)) {enabled = enable;}
 };
 #endif /* QUBE_H_ */
