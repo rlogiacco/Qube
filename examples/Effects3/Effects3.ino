@@ -91,6 +91,8 @@ ISR(TIMER1_COMPA_vect) {
 // macro for detection of falling edge and debouncing
 #define DFE(signal, state) ((state=((state<<1)|(signal&1))&DMASK)==DF)
 
+unsigned long pinState;
+
 Elapsed elapsed = 0;
 void loop() {
 	if(DFE(digitalRead(BUTTON_PIN), pinState) || elapsed >= 300000) {
