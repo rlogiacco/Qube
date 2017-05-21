@@ -83,6 +83,11 @@ ISR(TIMER1_COMPA_vect) {
 	}
 }
 
+#define DEBOUNCE 15
+#define DMASK ((1ULL<<DEBOUNCE)-1)
+#define DF (1ULL<<(DEBOUNCE-1))
+#define DR (DMASK-DF)
+
 // macro for detection of falling edge and debouncing
 #define DFE(signal, state) ((state=((state<<1)|(signal&1))&DMASK)==DF)
 

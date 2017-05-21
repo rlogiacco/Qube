@@ -16,6 +16,9 @@ install:
   
 script:
   - arduino --verbose --verify --board ${BOARD} $PWD/examples/Cube3/Cube3.ino
+  - arduino --verbose --verify --board ${BOARD} $PWD/examples/Effects3/Effects3.ino
+  - arduino --verbose --verify --board ${BOARD} $PWD/examples/Cube3\ -\ NPN/Cube3NPN.ino
+  - arduino --verbose --verify --board ${BOARD} $PWD/examples/Cube3\ -\ PNP/Cube3PNP.ino
   
 notifications:
   email:
