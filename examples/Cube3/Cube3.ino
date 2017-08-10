@@ -2,14 +2,15 @@
 #include <Qube.h>
 #include <FormattingSerialDebug.h>
 
-#define BUTTON_PIN 7
+#define COMMON_CATHODE true
+#define BUTTON_PIN 2
 #define SIZE 3
 const int pins[SIZE][SIZE] = { //
-		{ A3, A1, A2 }, // row 1
-		{ 13, 12, A0 }, // row 2
-		{ 10, 9, 11 }   // row 3
+		{ 3, 4, 5 }, // row 1
+		{ 6, 7, 8 }, // row 2
+		{ 9, 10, 11 }   // row 3
 };
-const int layers[] = { 3, 2, 4 };
+const int layers[] = { A0, A1, A2 };
 
 Qube qube(SIZE);
 
@@ -51,7 +52,7 @@ volatile uint8_t layer = 0;
 // cube implementation: the following example uses a simple
 // implementation directly driven by the MCU and 3 npn transistors
 ISR(TIMER1_COMPA_vect) {
-	digitalWrite(layers[layer++], LOW);
+	digitalWrite(layers[layer++], (COMMON_CATHODE ? LOW : HIGH));
 	if (layer == qube.size)
 		layer = 0;
 
@@ -62,12 +63,12 @@ ISR(TIMER1_COMPA_vect) {
 			for (uint8_t x = 0; x < qube.size; x++) {
 				uint8_t byte = qube[layer][position / 8];
 				uint8_t shift = 7 - position % 8;
-				uint8_t bit = ((byte >> shift) & 0x1);
+				uint8_t bit = (((COMMON_CATHODE ? byte : ~byte) >> shift) & 0x1);
 				position++;
 				digitalWrite(pins[y][x], bit);
 			}
 		}
-		digitalWrite(layers[layer], HIGH);
+		digitalWrite(layers[layer], (COMMON_CATHODE ? HIGH : LOW));
 	}
 }
 
