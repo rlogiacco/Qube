@@ -73,9 +73,9 @@ ISR(TIMER1_COMPA_vect) {
 			for (uint8_t x = 0; x < qube.size; x++) {
 				uint8_t byte = qube[layer][position / 8];
 				uint8_t shift = 7 - position % 8;
-				uint8_t bit = ((byte >> shift) & 0x1);
+				uint8_t bit = ((~byte >> shift) & 0x1);
 				position++;
-				digitalWrite(pins[y][x], ~bit);
+				digitalWrite(pins[y][x],bit);
 			}
 		}
 		digitalWrite(layers[layer], LOW);
