@@ -2,3 +2,10 @@ Qube [![Build Status](https://travis-ci.org/rlogiacco/Qube.svg?branch=master)](h
 ====
 
 An LED cube driver library for Arduino and similar uControllers
+
+<!-- toc -->
+
+
+
+<!-- tocstop -->
+
