@@ -1,6 +1,6 @@
 ### &#x26A0; **IMPORTANT**
  
-> Please, for support requests use the [Qube Forum](https://arduinolibs.freeflarum.com/t/qube), running a search before submitting a new case: do not abuse the Github issue tracker.
+> Please, before submitting a support request read carefully this README and check if an answer already exists among [previously answered questions](https://github.com/rlogiacco/Qube/issues?q=label:question): do not abuse the Github issue tracker.
 
 Qube [![Build Status](https://travis-ci.org/rlogiacco/Qube.svg?branch=master)](https://travis-ci.org/rlogiacco/Qube)
 ====
